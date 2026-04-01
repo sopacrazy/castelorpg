@@ -12,14 +12,37 @@ import { Quests } from "./components/ui/Quests";
 import { MobileControls } from "./components/ui/MobileControls";
 
 export default function App() {
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(() => {
+    // Check if we just refreshed to fix mobile layout
+    const needsStart = sessionStorage.getItem("game_auto_started");
+    if (needsStart === "true") {
+      sessionStorage.removeItem("game_auto_started");
+      return true;
+    }
+    return false;
+  });
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+      document.documentElement.requestFullscreen().catch(() => {});
     } else if (document.exitFullscreen) {
       document.exitFullscreen();
     }
+  };
+
+  const handleStartGame = () => {
+    // Temporary fix for mobile viewport bugs: 
+    // Reload once when entering the game for the first time in this session
+    const hasReloaded = sessionStorage.getItem("game_initial_reload");
+    if (!hasReloaded && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      sessionStorage.setItem("game_initial_reload", "true");
+      sessionStorage.setItem("game_auto_started", "true");
+      window.location.reload();
+      return;
+    }
+
+    setStarted(true);
+    if (window.innerWidth < 1024) toggleFullscreen();
   };
 
   if (!started) {
@@ -53,10 +76,7 @@ export default function App() {
           {/* Menu Actions */}
           <div className="flex flex-col gap-3 w-full max-w-[280px] z-20">
             <button
-              onClick={() => {
-                  setStarted(true);
-                  if (window.innerWidth < 1024) toggleFullscreen();
-              }}
+              onClick={handleStartGame}
               className="group relative bg-amber-700 hover:bg-amber-600 text-white font-black py-3 px-4 rounded-xl transition-all active:scale-95 uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(180,83,9,0.3)] border-2 border-amber-900/50 hover:border-amber-500/50 text-sm overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
