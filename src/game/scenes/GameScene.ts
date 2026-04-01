@@ -116,6 +116,9 @@ export class GameScene extends Phaser.Scene {
         this.gateInteractKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     }
 
+    // Launch UI Scene
+    this.scene.launch("UIScene");
+
     // Start Day Cycle
     this.startDay();
   }
