@@ -61,6 +61,11 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
     this.cameras.main.setBounds(0, 0, width * 2, height * 2);
     this.physics.world.setBounds(0, 0, width * 2, height * 2);
+    
+    // Auto-zoom for mobile to give more vision
+    if (this.scale.width < 1024) {
+        this.cameras.main.setZoom(0.75);
+    }
 
     // Day/Night Overlay
     this.dayNightOverlay = this.add
