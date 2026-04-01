@@ -98,6 +98,13 @@ export const MobileControls = () => {
         >
           -
         </button>
+        <button
+          className="w-10 h-10 bg-blue-600/20 active:bg-blue-600/40 border border-blue-600/40 rounded-md flex items-center justify-center text-white text-lg shadow-lg mt-2"
+          onClick={() => useGameStore.getState().triggerCameraSync()}
+          title="Centralizar Câmera"
+        >
+          🎯
+        </button>
       </div>
 
       {/* Right Side: Action Buttons */}

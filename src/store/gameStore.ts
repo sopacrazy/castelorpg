@@ -69,6 +69,8 @@ export interface GameState {
   // Camera Settings
   zoom: number;
   setZoom: (z: number) => void;
+  cameraSyncCounter: number;
+  triggerCameraSync: () => void;
 
   // Mobile Controls
   setHealth: (h: number) => void;
@@ -163,8 +165,10 @@ export const useGameStore = create<GameState>((set) => ({
     { id: "q3", description: "Fale com o Duque", completed: false },
   ],
 
-  zoom: 0.75,
+  zoom: 0.40,
   setZoom: (z) => set({ zoom: Math.max(0.3, Math.min(z, 2.0)) }),
+  cameraSyncCounter: 0,
+  triggerCameraSync: () => set((state) => ({ cameraSyncCounter: state.cameraSyncCounter + 1 })),
 
   virtualJoystick: { x: 0, y: 0 },
   virtualActions: { interact: false, attack: false },

@@ -25,6 +25,7 @@ export class GameScene extends Phaser.Scene {
   private enemiesToSpawn: number = 0;
   private spawnInterval: number = 2000;
   private lastSpawnTime: number = 0;
+  private lastCameraSync: number = 0;
 
   constructor() {
     super("GameScene");
@@ -132,6 +133,14 @@ export class GameScene extends Phaser.Scene {
     
     // Update camera zoom from store
     this.cameras.main.setZoom(state.zoom);
+
+    // Manual camera sync/center request from React UI
+    if (state.cameraSyncCounter > this.lastCameraSync) {
+        this.lastCameraSync = state.cameraSyncCounter;
+        this.cameras.main.centerOn(this.player.x, this.player.y);
+        this.cameras.main.startFollow(this.player, true, 1.0, 1.0); // Snap hard
+        console.log("Camera centered manually to:", this.player.x, this.player.y);
+    }
 
     if (Phaser.Input.Keyboard.JustDown(this.gateInteractKey) || state.virtualActions.interact) {
         if (state.virtualActions.interact) state.clearVirtualActions();
