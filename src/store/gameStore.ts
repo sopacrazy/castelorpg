@@ -66,7 +66,11 @@ export interface GameState {
     completed: boolean;
   }[];
 
-  // Actions
+  // Camera Settings
+  zoom: number;
+  setZoom: (z: number) => void;
+
+  // Mobile Controls
   setHealth: (h: number) => void;
   addResource: (type: ResourceType, amount: number) => void;
   toggleInventory: () => void;
@@ -158,6 +162,9 @@ export const useGameStore = create<GameState>((set) => ({
     { id: "q2", description: "Colete 10 madeiras", completed: false },
     { id: "q3", description: "Fale com o Duque", completed: false },
   ],
+
+  zoom: 0.75,
+  setZoom: (z) => set({ zoom: Math.max(0.3, Math.min(z, 2.0)) }),
 
   virtualJoystick: { x: 0, y: 0 },
   virtualActions: { interact: false, attack: false },

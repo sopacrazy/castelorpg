@@ -66,10 +66,8 @@ export class GameScene extends Phaser.Scene {
     // Snap camera to target immediately
     this.cameras.main.centerOn(this.player.x, this.player.y);
     
-    // Auto-zoom for mobile to give more vision
-    if (this.scale.width < 1024) {
-        this.cameras.main.setZoom(0.75);
-    }
+    // Initial zoom set from store
+    this.cameras.main.setZoom(useGameStore.getState().zoom);
 
     // Day/Night Overlay
     this.dayNightOverlay = this.add
@@ -131,6 +129,10 @@ export class GameScene extends Phaser.Scene {
     this.player.update(time, delta);
 
     const state = useGameStore.getState();
+    
+    // Update camera zoom from store
+    this.cameras.main.setZoom(state.zoom);
+
     if (Phaser.Input.Keyboard.JustDown(this.gateInteractKey) || state.virtualActions.interact) {
         if (state.virtualActions.interact) state.clearVirtualActions();
         this.handleInteract();

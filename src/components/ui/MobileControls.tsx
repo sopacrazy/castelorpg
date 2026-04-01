@@ -4,6 +4,8 @@ import { useGameStore } from "../../store/gameStore";
 export const MobileControls = () => {
   const setVirtualJoystick = useGameStore((state) => state.setVirtualJoystick);
   const triggerVirtualAction = useGameStore((state) => state.triggerVirtualAction);
+  const zoom = useGameStore((state) => state.zoom);
+  const setZoom = useGameStore((state) => state.setZoom);
   
   const [joystickActive, setJoystickActive] = useState(false);
   const [joystickPos, setJoystickPos] = useState({ x: 0, y: 0 });
@@ -77,6 +79,25 @@ export const MobileControls = () => {
             {/* Center dot */}
             <div className="absolute w-1 h-1 bg-white/10 rounded-full" />
         </div>
+      </div>
+
+      {/* Right Side: Zoom Controls */}
+      <div className="absolute top-20 right-10 flex flex-col gap-2 pointer-events-auto items-center">
+        <button
+          className="w-10 h-10 bg-white/10 active:bg-white/20 border border-white/20 rounded-md flex items-center justify-center text-white font-bold"
+          onPointerDown={() => setZoom(zoom + 0.05)}
+        >
+          +
+        </button>
+        <div className="bg-black/50 px-2 py-1 rounded text-[10px] text-white font-mono border border-white/10 shadow-lg">
+          {zoom.toFixed(2)}x
+        </div>
+        <button
+          className="w-10 h-10 bg-white/10 active:bg-white/20 border border-white/20 rounded-md flex items-center justify-center text-white font-bold"
+          onPointerDown={() => setZoom(zoom - 0.05)}
+        >
+          -
+        </button>
       </div>
 
       {/* Right Side: Action Buttons */}
