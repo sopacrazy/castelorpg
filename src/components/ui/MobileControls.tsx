@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { useGameStore } from "../../store/gameStore";
 
 export const MobileControls = () => {
-  const setVirtualJoystick = useGameStore((state) => state.setVirtualJoystick);
-  const triggerVirtualAction = useGameStore((state) => state.triggerVirtualAction);
+  const { isInventoryOpen, isQuestsOpen, isDialogActive, setVirtualJoystick, triggerVirtualAction } = useGameStore();
+  
+  if (isInventoryOpen || isQuestsOpen || isDialogActive) return null;
   
   const [joystickActive, setJoystickActive] = useState(false);
   const [joystickPos, setJoystickPos] = useState({ x: 0, y: 0 });

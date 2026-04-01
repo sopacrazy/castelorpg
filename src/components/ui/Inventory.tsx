@@ -7,8 +7,8 @@ export const Inventory = () => {
   if (!isInventoryOpen) return null;
 
   return (
-    <div className="absolute inset-0 bg-stone-950/90 flex items-center justify-center z-50 p-8 backdrop-blur-md">
-      <div className="bg-stone-900 border-[3px] border-stone-800 rounded-2xl w-full max-w-2xl max-h-[90%] flex flex-col shadow-[0_0_100px_rgba(0,0,0,1)] ring-1 ring-amber-900/40 relative">
+    <div className="absolute inset-0 bg-stone-950/95 flex items-center justify-center z-50 p-2 md:p-8 backdrop-blur-md">
+      <div className="bg-stone-900 border-[3px] border-stone-800 rounded-2xl w-full max-w-5xl h-full max-h-[85vh] flex flex-col shadow-[0_0_100px_rgba(0,0,0,1)] ring-1 ring-amber-900/40 relative pointer-events-auto">
         {/* Ornaments */}
         <div className="absolute -top-2 -left-2 w-12 h-12 border-t-2 border-l-2 border-amber-600/50 rounded-tl-2xl pointer-events-none" />
         <div className="absolute -top-2 -right-2 w-12 h-12 border-t-2 border-r-2 border-amber-600/50 rounded-tr-2xl pointer-events-none" />
@@ -32,18 +32,17 @@ export const Inventory = () => {
         </div>
  
         {/* Content */}
-        <div className="flex-1 p-4 md:p-8 flex flex-col md:flex-row gap-4 md:gap-8 overflow-y-auto">
+        <div className="flex-1 p-3 md:p-8 flex flex-row gap-3 md:gap-8 overflow-hidden">
           {/* Left: Equipped & Stats */}
-          <div className="w-[35%] flex flex-col gap-6">
+          <div className="w-[30%] flex flex-col gap-3 md:gap-6 overflow-y-auto pr-1 custom-scrollbar">
             <div className="bg-stone-950/60 border border-stone-800 rounded-xl p-5 shadow-inner">
               <h3 className="text-amber-500 font-black text-[10px] uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b22]" />
                 Mão Principal
               </h3>
               {equippedWeapon ? (
-                <div className="flex flex-col items-center gap-4 p-4 bg-stone-900/80 rounded-lg border border-amber-900/30 shadow-2xl relative group overflow-hidden">
+                <div className="flex flex-row md:flex-col items-center gap-3 md:gap-4 p-2 md:p-4 bg-stone-900/80 rounded-lg border border-amber-900/30 shadow-2xl relative group overflow-hidden">
                   <div className="absolute inset-0 bg-amber-500/5 group-hover:bg-amber-500/10 transition-colors pointer-events-none" />
-                  <div className="text-5xl drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)] z-10 group-hover:scale-110 transition-transform duration-500">{equippedWeapon.icon}</div>
+                  <div className="text-3xl md:text-5xl drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)] z-10 group-hover:scale-110 transition-transform duration-500">{equippedWeapon.icon}</div>
                   <div className="text-center z-10">
                     <div className="text-amber-100 font-bold text-sm tracking-wide">
                       {equippedWeapon.name}
@@ -60,8 +59,8 @@ export const Inventory = () => {
               )}
             </div>
  
-            <div className="bg-stone-950/60 border border-stone-800 rounded-xl p-5 shadow-inner flex-1">
-              <h3 className="text-stone-400 font-black text-[10px] uppercase tracking-widest mb-4">Poder de Combate</h3>
+            <div className="bg-stone-950/60 border border-stone-800 rounded-xl p-3 md:p-5 shadow-inner">
+              <h3 className="text-stone-400 font-black text-[8px] md:text-[10px] uppercase tracking-widest mb-2 md:mb-4">Poder de Combate</h3>
               <div className="space-y-4">
                 <div className="flex flex-col gap-1.5">
                    <div className="flex justify-between text-[10px] uppercase font-black text-stone-500">
@@ -97,9 +96,9 @@ export const Inventory = () => {
           </div>
  
           {/* Right: Grid */}
-          <div className="w-full md:w-[65%] bg-stone-950/40 border border-stone-800 rounded-xl p-3 md:p-6 shadow-inner relative flex flex-col min-h-[300px]">
-            <h3 className="text-stone-400 font-black text-[10px] uppercase tracking-widest mb-4">Espaço na Bolsa</h3>
-            <div className="grid grid-cols-4 md:grid-cols-4 gap-2 md:gap-4 overflow-y-auto pr-2 custom-scrollbar">
+          <div className="w-[70%] bg-stone-950/40 border border-stone-800 rounded-xl p-3 md:p-6 shadow-inner relative flex flex-col h-full">
+            <h3 className="text-stone-400 font-black text-[10px] uppercase tracking-widest mb-4">Mochila</h3>
+            <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-2 md:gap-4 overflow-y-auto pr-2 custom-scrollbar flex-1 pb-16">
               {inventory.map((item) => (
                 <div
                   key={item.id}
@@ -133,9 +132,9 @@ export const Inventory = () => {
               )}
             </div>
             
-            <div className="mt-auto pt-6 flex justify-end">
+            <div className="absolute bottom-4 right-4">
                <div className="text-[10px] text-stone-600 uppercase font-black tracking-widest leading-none">
-                 Capacidade do Jogador: {inventory.length}/16
+                 Peso: {inventory.length}/16
                </div>
             </div>
           </div>
