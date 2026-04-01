@@ -48,6 +48,7 @@ export interface GameState {
   isDialogActive: boolean;
   currentDialog: { name: string; text: string } | null;
   toast: string | null;
+  isQuestsOpen: boolean;
 
   // Castle Upgrades
   castleUpgrades: {
@@ -76,6 +77,7 @@ export interface GameState {
   setHealth: (h: number) => void;
   addResource: (type: ResourceType, amount: number) => void;
   toggleInventory: () => void;
+  toggleQuests: () => void;
   setDialog: (dialog: { name: string; text: string } | null) => void;
   setToast: (text: string | null) => void;
   setDayTime: (isNight: boolean, day: number) => void;
@@ -149,6 +151,7 @@ export const useGameStore = create<GameState>((set) => ({
   isDialogActive: false,
   currentDialog: null,
   toast: null,
+  isQuestsOpen: false,
 
   castleUpgrades: {
     walls: 0,
@@ -165,7 +168,7 @@ export const useGameStore = create<GameState>((set) => ({
     { id: "q3", description: "Fale com o Duque", completed: false },
   ],
 
-  zoom: 0.40,
+  zoom: 0.75,
   setZoom: (z) => set({ zoom: Math.max(0.3, Math.min(z, 2.0)) }),
   cameraSyncCounter: 0,
   triggerCameraSync: () => set((state) => ({ cameraSyncCounter: state.cameraSyncCounter + 1 })),
@@ -194,6 +197,8 @@ export const useGameStore = create<GameState>((set) => ({
     }),
   toggleInventory: () =>
     set((state) => ({ isInventoryOpen: !state.isInventoryOpen })),
+  toggleQuests: () =>
+    set((state) => ({ isQuestsOpen: !state.isQuestsOpen })),
   setDialog: (dialog) =>
     set({ currentDialog: dialog, isDialogActive: !!dialog }),
   setToast: (text) => set({ toast: text }),
