@@ -54,13 +54,20 @@ export class GameScene extends Phaser.Scene {
     // Create Map Elements
     this.createMap();
 
-    // Player
-    this.player = new Player(this, width / 2, height / 2);
+    // Use fixed world size for better predictability
+    const worldWidth = 3200;
+    const worldHeight = 3200;
+
+    // Player (Spawn in center of world)
+    this.player = new Player(this, worldWidth / 2, worldHeight / 2);
 
     // Camera
-    this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
-    this.cameras.main.setBounds(0, 0, width * 2, height * 2);
-    this.physics.world.setBounds(0, 0, width * 2, height * 2);
+    this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+    this.cameras.main.setBounds(0, 0, worldWidth, worldHeight);
+    this.physics.world.setBounds(0, 0, worldWidth, worldHeight);
+    
+    // Snap camera to target immediately
+    this.cameras.main.centerOn(this.player.x, this.player.y);
     
     // Auto-zoom for mobile to give more vision
     if (this.scale.width < 1024) {
