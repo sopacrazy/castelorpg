@@ -39,8 +39,8 @@ export const CastleUpgrades = ({
   ];
 
   return (
-    <div className="absolute inset-0 bg-stone-950/90 flex items-center justify-center z-50 p-4 md:p-8 backdrop-blur-md">
-      <div className="bg-stone-900 border-[3px] border-stone-800 rounded-2xl w-full max-w-2xl max-h-[90%] flex flex-col shadow-[0_0_100px_rgba(0,0,0,1)] ring-1 ring-amber-900/30 relative">
+    <div className="absolute inset-0 bg-stone-950/98 flex items-center justify-center z-50 p-2 md:p-6 backdrop-blur-lg">
+      <div className="bg-stone-900/90 border-2 border-stone-800 rounded-xl w-full h-full max-w-[98%] max-h-[98%] flex flex-col shadow-[0_0_80px_rgba(0,0,0,0.9)] relative overflow-hidden ring-1 ring-white/5">
         {/* Header */}
         <div className="bg-gradient-to-b from-stone-800 to-stone-900 p-3 md:p-5 md:px-6 border-b border-white/5 flex justify-between items-center rounded-t-2xl">
           <div className="flex items-center gap-2 md:gap-3">
@@ -58,8 +58,8 @@ export const CastleUpgrades = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-3 md:p-6 overflow-y-auto custom-scrollbar">
-          <div className="grid grid-cols-1 gap-3 md:gap-4">
+        <div className="flex-1 p-2 md:p-6 overflow-hidden">
+          <div className="grid grid-cols-2 gap-2 md:gap-4 h-full content-start overflow-y-auto pr-1">
             {upgrades.map((upg) => {
               const currentLevel =
                 castleUpgrades[upg.id as keyof typeof castleUpgrades] || 0;
@@ -77,21 +77,21 @@ export const CastleUpgrades = ({
               return (
                 <div
                   key={upg.id}
-                  className="bg-stone-950/40 border border-stone-800 hover:border-amber-900/50 rounded-xl p-3 md:p-5 flex flex-col md:flex-row justify-between items-start md:items-center transition-all group hover:bg-stone-800/20 gap-4"
+                  className="bg-stone-950/40 border border-stone-800 hover:border-amber-900/50 rounded-lg p-2 md:p-4 flex flex-col justify-between transition-all group hover:bg-stone-800/20 gap-2"
                 >
                   <div className="flex-1 w-full">
                     <div className="flex items-center gap-2 md:gap-3 mb-0.5 md:mb-1">
-                       <h3 className="text-white font-serif font-black text-sm md:text-lg uppercase tracking-wider">
+                       <h3 className="text-white font-serif font-black text-xs md:text-lg uppercase tracking-wider">
                         {upg.name}
                        </h3>
                        <div className="px-1.5 py-0.5 rounded bg-stone-800 border border-stone-700 text-[8px] md:text-[10px] text-stone-500 font-bold uppercase">
                          Nv {currentLevel}
                        </div>
                     </div>
-                    <p className="text-stone-400 text-[10px] md:text-xs italic leading-relaxed max-w-sm">"{upg.desc}"</p>
+                     <p className="text-stone-500 text-[8px] md:text-xs italic leading-tight">"{upg.desc}"</p>
 
                     {/* Costs */}
-                    <div className="flex flex-wrap gap-2 md:gap-4 mt-2 md:mt-4">
+                    <div className="flex flex-wrap gap-1 md:gap-2 mt-1 md:mt-2">
                       {Object.entries(upg.cost).map(([res, amount]) => {
                         const required = amount * (currentLevel + 1);
                         const hasEnough = resources[res as keyof typeof resources] >= required;
@@ -126,10 +126,10 @@ export const CastleUpgrades = ({
                       });
                       upgradeCastle(upg.id as any);
                     }}
-                    className={`w-full md:w-auto px-6 md:px-8 py-2 md:py-3 rounded-lg font-black uppercase tracking-[0.1em] md:tracking-[0.15em] text-[8px] md:text-[10px] transition-all relative overflow-hidden group/btn ${
+                    className={`w-full py-1.5 md:py-2 rounded border font-black uppercase tracking-widest text-[8px] md:text-[9px] transition-all relative overflow-hidden group/btn ${
                       canAfford
-                        ? "bg-amber-900/40 hover:bg-amber-800 text-amber-200 border border-amber-700/50 shadow-lg cursor-pointer hover:translate-y-[-2px] active:translate-y-[0px]"
-                        : "bg-stone-800 text-stone-600 border border-stone-700 cursor-not-allowed"
+                        ? "bg-amber-900/40 hover:bg-amber-800 text-amber-200 border-amber-700/50 shadow-lg cursor-pointer"
+                        : "bg-stone-800/50 text-stone-600 border-stone-700 cursor-not-allowed opacity-50"
                     }`}
                   >
                     <span className="relative z-10">MELHORAR</span>

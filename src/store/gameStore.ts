@@ -49,6 +49,7 @@ export interface GameState {
   currentDialog: { name: string; text: string } | null;
   toast: string | null;
   isQuestsOpen: boolean;
+  isUpgradesOpen: boolean;
 
   // Castle Upgrades
   castleUpgrades: {
@@ -78,6 +79,7 @@ export interface GameState {
   addResource: (type: ResourceType, amount: number) => void;
   toggleInventory: () => void;
   toggleQuests: () => void;
+  toggleUpgrades: (val?: boolean) => void;
   setDialog: (dialog: { name: string; text: string } | null) => void;
   setToast: (text: string | null) => void;
   setDayTime: (isNight: boolean, day: number) => void;
@@ -94,7 +96,7 @@ export interface GameState {
   clearVirtualActions: () => void;
 }
 
-export const useGameStore = create<GameState>((set) => ({
+export const useGameStore = create<GameState>((set, get) => ({
   health: 100,
   maxHealth: 100,
   stamina: 100,
@@ -152,6 +154,7 @@ export const useGameStore = create<GameState>((set) => ({
   currentDialog: null,
   toast: null,
   isQuestsOpen: false,
+  isUpgradesOpen: false,
 
   castleUpgrades: {
     walls: 0,
@@ -199,6 +202,7 @@ export const useGameStore = create<GameState>((set) => ({
     set((state) => ({ isInventoryOpen: !state.isInventoryOpen })),
   toggleQuests: () =>
     set((state) => ({ isQuestsOpen: !state.isQuestsOpen })),
+  toggleUpgrades: (val) => set({ isUpgradesOpen: val ?? !get().isUpgradesOpen }),
   setDialog: (dialog) =>
     set({ currentDialog: dialog, isDialogActive: !!dialog }),
   setToast: (text) => set({ toast: text }),

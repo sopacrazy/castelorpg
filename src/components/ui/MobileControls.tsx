@@ -2,9 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useGameStore } from "../../store/gameStore";
 
 export const MobileControls = () => {
-  const { isInventoryOpen, isQuestsOpen, isDialogActive, setVirtualJoystick, triggerVirtualAction } = useGameStore();
-  
-  if (isInventoryOpen || isQuestsOpen || isDialogActive) return null;
+  const { isInventoryOpen, isQuestsOpen, isDialogActive, isUpgradesOpen, setVirtualJoystick, triggerVirtualAction } = useGameStore();
   
   const [joystickActive, setJoystickActive] = useState(false);
   const [joystickPos, setJoystickPos] = useState({ x: 0, y: 0 });
@@ -68,6 +66,8 @@ export const MobileControls = () => {
       window.removeEventListener("pointerup", handlePointerUp);
     };
   }, [joystickActive]);
+  
+  if (isInventoryOpen || isQuestsOpen || isDialogActive || isUpgradesOpen) return null;
 
   return (
     <div className="absolute inset-0 z-50 pointer-events-none lg:hidden select-none touch-none">

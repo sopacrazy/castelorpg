@@ -14,8 +14,9 @@ export const HUD = () => {
     isNight,
     enemiesRemaining,
     toast,
+    isUpgradesOpen,
+    toggleUpgrades,
   } = useGameStore();
-  const [isUpgradesOpen, setIsUpgradesOpen] = useState(false);
 
   return (
     <>
@@ -50,7 +51,7 @@ export const HUD = () => {
             
             <div className="flex flex-col gap-1.5 items-end">
               <div className="flex gap-1">
-                <button onClick={() => setIsUpgradesOpen(true)} className="bg-amber-900/60 p-2 rounded-lg border border-amber-700 pointer-events-auto text-lg shadow-xl" title="Upgrades">🏰</button>
+                <button onClick={() => toggleUpgrades(true)} className="bg-amber-900/60 p-2 rounded-lg border border-amber-700 pointer-events-auto text-lg shadow-xl" title="Upgrades">🏰</button>
                 <button onClick={() => useGameStore.getState().toggleInventory()} className="bg-stone-800/80 p-2 rounded-lg border border-stone-600 pointer-events-auto text-lg shadow-xl" title="Mochila">🎒</button>
               </div>
               <button onClick={() => useGameStore.getState().toggleQuests()} className="bg-stone-800/80 p-2 rounded-lg border border-stone-600 pointer-events-auto text-lg shadow-xl" title="Objetivos">📜</button>
@@ -92,7 +93,7 @@ export const HUD = () => {
 
       <CastleUpgrades
         isOpen={isUpgradesOpen}
-        onClose={() => setIsUpgradesOpen(false)}
+        onClose={() => toggleUpgrades(false)}
       />
 
       {/* Floating Toast Notification */}
