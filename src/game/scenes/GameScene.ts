@@ -31,9 +31,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    const { width, height } = this.scale;
-    const worldWidth = 3200;
-    const worldHeight = 3200;
+    const worldWidth = 4000;
+    const worldHeight = 4000;
 
     // Physics Groups
     this.walls = this.physics.add.staticGroup();
@@ -53,13 +52,14 @@ export class GameScene extends Phaser.Scene {
     this.add.tileSprite(0, 0, worldWidth, worldHeight, "grass").setOrigin(0).setDepth(0);
 
     // Create Map Elements
-    this.createMap();
+    this.createMap(worldWidth, worldHeight);
 
     // Player (Spawn in center of world)
     this.player = new Player(this, worldWidth / 2, worldHeight / 2);
+    this.player.setDepth(1000); // Ensure player is always on top
 
     // Camera
-    this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+    this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
     this.cameras.main.setBounds(0, 0, worldWidth, worldHeight);
     this.physics.world.setBounds(0, 0, worldWidth, worldHeight);
     
@@ -157,9 +157,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private createMap() {
-    const worldWidth = 3200;
-    const worldHeight = 3200;
+  private createMap(worldWidth: number, worldHeight: number) {
     const offsetX = worldWidth / 2 - 320;
     const offsetY = worldHeight / 2 - 300;
 
@@ -453,12 +451,11 @@ export class GameScene extends Phaser.Scene {
   private spawnEnemy() {
     this.enemiesToSpawn--;
 
-    // Spawn at random edge
+    // Spawn at random edge of the 4000x4000 world
     const edge = Math.floor(Math.random() * 4);
-    let x = 0,
-      y = 0;
-    const w = this.scale.width * 2;
-    const h = this.scale.height * 2;
+    let x = 0, y = 0;
+    const w = 4000;
+    const h = 4000;
 
     if (edge === 0) {
       x = Math.random() * w;
