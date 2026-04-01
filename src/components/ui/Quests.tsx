@@ -7,7 +7,7 @@ import { useGameStore } from "../../store/gameStore";
  
    return (
      <div 
-         className="absolute top-32 right-4 bg-stone-900/95 border-2 border-stone-800 rounded-lg p-4 pointer-events-auto shadow-2xl ring-1 ring-amber-900/20 transition-all duration-300 w-64 z-50"
+        className="absolute top-32 right-4 bg-stone-900/95 border-2 border-stone-800 rounded-lg p-4 pointer-events-auto shadow-2xl ring-1 ring-amber-900/20 transition-all duration-300 w-64 z-[70]"
      >
        <div 
          className="flex items-center gap-2 mb-3 border-b border-stone-800 pb-2 cursor-pointer"

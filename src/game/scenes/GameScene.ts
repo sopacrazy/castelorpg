@@ -95,14 +95,7 @@ export class GameScene extends Phaser.Scene {
       this,
     );
 
-    // NPC Interaction
-    this.physics.add.overlap(
-      this.player,
-      this.npcs,
-      this.interactNPC,
-      undefined,
-      this,
-    );
+    // NPC Interaction is handled in handleInteract for 'E' and click
 
     // Events
     this.events.on("player-attack", this.handlePlayerAttack, this);
@@ -220,6 +213,11 @@ export class GameScene extends Phaser.Scene {
         "text",
         "Precisamos de comida! Pegue água no poço, plante sementes e cuide da plantação (E).",
     );
+    duke.setInteractive({ useHandCursor: true });
+    duke.on("pointerdown", () => {
+        const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, duke.x, duke.y);
+        if (dist < 100) this.interactNPC(this.player, duke);
+    });
 
     // Random Trees, Stones and Herbs around the map
     const spawnPoints: { x: number; y: number }[] = [];
@@ -502,6 +500,22 @@ export class GameScene extends Phaser.Scene {
 
   private handleInteract() {
     const state = useGameStore.getState();
+
+    // 0. Check for NPC first
+    let nearNPC = false;
+    let targetNPC: any = null;
+    this.npcs.getChildren().forEach((npc: any) => {
+        const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, npc.x, npc.y);
+        if (dist < 80) {
+            nearNPC = true;
+            targetNPC = npc;
+        }
+    });
+
+    if (nearNPC && targetNPC) {
+        this.interactNPC(this.player, targetNPC);
+        return;
+    }
 
     // 1. Check for repair first
     if (this.tryRepair()) {
