@@ -168,7 +168,7 @@ export const useGameStore = create<GameState>((set) => ({
     { id: "q3", description: "Fale com o Duque", completed: false },
   ],
 
-  zoom: 0.45,
+  zoom: 0.6,
   setZoom: (z) => set({ zoom: Math.max(0.3, Math.min(z, 2.0)) }),
   cameraSyncCounter: 0,
   triggerCameraSync: () => set((state) => ({ cameraSyncCounter: state.cameraSyncCounter + 1 })),

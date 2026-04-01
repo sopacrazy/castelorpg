@@ -49,8 +49,9 @@ export class GameScene extends Phaser.Scene {
     this.loot = this.physics.add.group();
     this.npcs = this.physics.add.staticGroup();
 
-    // Background
-    this.add.tileSprite(0, 0, worldWidth, worldHeight, "grass").setOrigin(0).setDepth(0);
+    // Background with large buffer to avoid black edges
+    const buffer = 4000;
+    this.add.tileSprite(-buffer/2, -buffer/2, worldWidth + buffer, worldHeight + buffer, "grass").setOrigin(0).setDepth(0);
 
     // Create Map Elements
     this.createMap(worldWidth, worldHeight);
