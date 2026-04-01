@@ -31,11 +31,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    const width = this.scale.width;
-    const height = this.scale.height;
-
-    // Background
-    this.add.tileSprite(0, 0, width * 2, height * 2, "grass").setOrigin(0);
+    const { width, height } = this.scale;
+    const worldWidth = 3200;
+    const worldHeight = 3200;
 
     // Physics Groups
     this.walls = this.physics.add.staticGroup();
@@ -51,12 +49,11 @@ export class GameScene extends Phaser.Scene {
     this.loot = this.physics.add.group();
     this.npcs = this.physics.add.staticGroup();
 
+    // Background
+    this.add.tileSprite(0, 0, worldWidth, worldHeight, "grass").setOrigin(0).setDepth(0);
+
     // Create Map Elements
     this.createMap();
-
-    // Use fixed world size for better predictability
-    const worldWidth = 3200;
-    const worldHeight = 3200;
 
     // Player (Spawn in center of world)
     this.player = new Player(this, worldWidth / 2, worldHeight / 2);
@@ -76,7 +73,7 @@ export class GameScene extends Phaser.Scene {
 
     // Day/Night Overlay
     this.dayNightOverlay = this.add
-      .rectangle(0, 0, width * 2, height * 2, 0x000033, 0)
+      .rectangle(0, 0, worldWidth, worldHeight, 0x000033, 0)
       .setOrigin(0);
     this.dayNightOverlay.setDepth(100);
 
@@ -159,43 +156,48 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createMap() {
+    const worldWidth = 3200;
+    const worldHeight = 3200;
+    const offsetX = worldWidth / 2 - 320;
+    const offsetY = worldHeight / 2 - 300;
+
     // Simple castle walls
     for (let i = 0; i < 20; i++) {
-        const topWall = this.walls.create(i * 32 + 16, 100, "wall");
+        const topWall = this.walls.create(i * 32 + 16 + offsetX, 100 + offsetY, "wall");
         topWall.setData("health", 100);
         topWall.setData("maxHealth", 100);
 
         // Bottom wall with a gap in the middle (acting as a gate area)
         if (i < 9 || i > 11) {
-            const botWall = this.walls.create(i * 32 + 16, 500, "wall");
+            const botWall = this.walls.create(i * 32 + 16 + offsetX, 500 + offsetY, "wall");
             botWall.setData("health", 100);
             botWall.setData("maxHealth", 100);
         } else {
             // Place gates in the gap
-            const gate = this.gates.create(i * 32 + 16, 500, "gate");
+            const gate = this.gates.create(i * 32 + 16 + offsetX, 500 + offsetY, "gate");
             gate.setData("health", 150);
             gate.setData("maxHealth", 150);
             gate.setDepth(5);
         }
     }
     for (let i = 0; i < 12; i++) {
-        const leftWall = this.walls.create(16, i * 32 + 100 + 16, "wall"); // Left wall
+        const leftWall = this.walls.create(16 + offsetX, i * 32 + 100 + 16 + offsetY, "wall"); // Left wall
         leftWall.setData("health", 100);
         leftWall.setData("maxHealth", 100);
 
-        const rightWall = this.walls.create(624, i * 32 + 100 + 16, "wall"); // Right wall
+        const rightWall = this.walls.create(624 + offsetX, i * 32 + 100 + 16 + offsetY, "wall"); // Right wall
         rightWall.setData("health", 100);
         rightWall.setData("maxHealth", 100);
     }
 
     // Well
-    this.well = this.physics.add.sprite(220, 180, "well");
+    this.well = this.physics.add.sprite(220 + offsetX, 180 + offsetY, "well");
     this.well.setImmovable(true);
 
     // Crops (Soil state)
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 3; j++) {
-            const crop = this.crops.create(200 + i * 40, 310 + j * 40, "crop_soil");
+            const crop = this.crops.create(200 + i * 40 + offsetX, 310 + j * 40 + offsetY, "crop_soil");
             crop.setData("health", 50);
             crop.setData("maxHealth", 50);
             crop.setData("stage", 0); // 0: soil, 1: seeded, 2: growing, 3: ready
@@ -203,7 +205,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // NPCs
-    const duke = this.npcs.create(300, 150, "npc");
+    const duke = this.npcs.create(300 + offsetX, 150 + offsetY, "npc");
     duke.setData("name", "Duque Mariom Rosário");
     duke.setData(
         "text",
@@ -211,8 +213,6 @@ export class GameScene extends Phaser.Scene {
     );
 
     // Random Trees, Stones and Herbs around the map
-    const worldWidth = this.scale.width * 2;
-    const worldHeight = this.scale.height * 2;
     const spawnPoints: { x: number; y: number }[] = [];
 
     const isDistOk = (x: number, y: number) => {
@@ -222,14 +222,19 @@ export class GameScene extends Phaser.Scene {
         return true;
     };
 
-    for (let i = 0; i < 40; i++) {
+    // Spawn Area exclusions (around base)
+    const isInBase = (x: number, y: number) => {
+        return x > offsetX - 50 && x < offsetX + 700 && y > offsetY - 50 && y < offsetY + 600;
+    };
+
+    for (let i = 0; i < 60; i++) {
         let x, y;
         let attempts = 0;
         do {
             x = Phaser.Math.Between(50, worldWidth - 50);
             y = Phaser.Math.Between(50, worldHeight - 50);
             attempts++;
-        } while ((x > -20 && x < 660 && y > 80 && y < 520 || !isDistOk(x, y)) && attempts < 100);
+        } while ((isInBase(x, y) || !isDistOk(x, y)) && attempts < 100);
         
         if (attempts < 100) {
             const tree = this.trees.create(x, y, "tree");
@@ -238,14 +243,14 @@ export class GameScene extends Phaser.Scene {
         }
     }
     
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 40; i++) {
         let x, y;
         let attempts = 0;
         do {
             x = Phaser.Math.Between(50, worldWidth - 50);
             y = Phaser.Math.Between(50, worldHeight - 50);
             attempts++;
-        } while ((x > -20 && x < 660 && y > 80 && y < 520 || !isDistOk(x, y)) && attempts < 100);
+        } while ((isInBase(x, y) || !isDistOk(x, y)) && attempts < 100);
         
         if (attempts < 100) {
             const stone = this.stones.create(x, y, "stone");
@@ -254,17 +259,17 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    for (let i = 0; i < 25; i++) { // Increased herb count for better visibility
+    for (let i = 0; i < 50; i++) {
         let x, y;
         let attempts = 0;
         do {
             x = Phaser.Math.Between(50, worldWidth - 50);
             y = Phaser.Math.Between(50, worldHeight - 50);
             attempts++;
-        } while ((x > -20 && x < 660 && y > 80 && y < 520 || !isDistOk(x, y)) && attempts < 100);
-        
+        } while ((isInBase(x, y) || !isDistOk(x, y)) && attempts < 100);
+
         if (attempts < 100) {
-            const herb = this.herbs.create(x, y, "sprout"); 
+            const herb = this.herbs.create(x, y, "sprout");
             herb.setData("health", 1);
             spawnPoints.push({ x, y });
         }
