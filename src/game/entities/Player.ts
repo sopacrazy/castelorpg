@@ -55,21 +55,23 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     let vx = 0;
     let vy = 0;
 
-    // Keyboard move
-    if (this.cursors.left.isDown || this.wasd.A.isDown) {
-      vx = -speed;
-      this.facing = "left";
-    } else if (this.cursors.right.isDown || this.wasd.D.isDown) {
-      vx = speed;
-      this.facing = "right";
-    }
+    // Keyboard move (Safe check for mobile where keyboard might be null)
+    if (this.cursors) {
+      if (this.cursors.left.isDown || (this.wasd && this.wasd.A.isDown)) {
+        vx = -speed;
+        this.facing = "left";
+      } else if (this.cursors.right.isDown || (this.wasd && this.wasd.D.isDown)) {
+        vx = speed;
+        this.facing = "right";
+      }
 
-    if (this.cursors.up.isDown || this.wasd.W.isDown) {
-      vy = -speed;
-      this.facing = "up";
-    } else if (this.cursors.down.isDown || this.wasd.S.isDown) {
-      vy = speed;
-      this.facing = "down";
+      if (this.cursors.up.isDown || (this.wasd && this.wasd.W.isDown)) {
+        vy = -speed;
+        this.facing = "up";
+      } else if (this.cursors.down.isDown || (this.wasd && this.wasd.S.isDown)) {
+        vy = speed;
+        this.facing = "down";
+      }
     }
 
     // Virtual Joystick Move (if no keyboard activity)

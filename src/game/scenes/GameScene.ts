@@ -31,8 +31,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    const worldWidth = 4000;
-    const worldHeight = 4000;
+    const worldWidth = 10000;
+    const worldHeight = 10000;
 
     // Physics Groups
     this.walls = this.physics.add.staticGroup();
@@ -56,7 +56,7 @@ export class GameScene extends Phaser.Scene {
 
     // Player (Spawn in center of world)
     this.player = new Player(this, worldWidth / 2, worldHeight / 2);
-    this.player.setDepth(1000); // Ensure player is always on top
+    this.player.setDepth(1000); 
 
     // Camera
     this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
