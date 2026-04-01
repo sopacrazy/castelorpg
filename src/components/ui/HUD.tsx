@@ -97,9 +97,10 @@ export const HUD = () => {
 
       {/* Floating Toast Notification */}
       {toast && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 pointer-events-none animate-bounce">
-          <div className="bg-stone-900 border-2 border-amber-700/80 p-2 px-6 rounded-full shadow-2xl backdrop-blur-md">
-            <span className="text-amber-400 font-black text-sm tracking-widest uppercase">
+        <div className="fixed top-1/2 right-10 -translate-y-1/2 z-50 pointer-events-none animate-in fade-in slide-in-from-right-10">
+          <div className="bg-stone-900 border-2 border-amber-700/80 p-3 px-6 rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.8)] backdrop-blur-md ring-1 ring-amber-500/20">
+            <span className="text-amber-400 font-black text-sm tracking-widest uppercase flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                 {toast}
             </span>
           </div>

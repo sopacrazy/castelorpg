@@ -32,8 +32,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    const worldWidth = 2500;
-    const worldHeight = 2500;
+    const worldWidth = 1500;
+    const worldHeight = 1500;
 
     // Physics Groups
     this.walls = this.physics.add.staticGroup();
@@ -80,7 +80,10 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, this.walls);
     this.physics.add.collider(this.player, this.crops);
     this.physics.add.collider(this.player, this.trees);
+    this.physics.add.collider(this.player, this.stones);
+    this.physics.add.collider(this.player, this.herbs);
     this.physics.add.collider(this.player, this.gates);
+    this.physics.add.collider(this.player, this.well);
     this.physics.add.collider(this.enemies, this.walls);
     this.physics.add.collider(this.enemies, this.gates);
     this.physics.add.collider(this.enemies, this.crops);
@@ -234,7 +237,7 @@ export class GameScene extends Phaser.Scene {
         return x > offsetX - 50 && x < offsetX + 700 && y > offsetY - 50 && y < offsetY + 600;
     };
 
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 40; i++) {
         let x, y;
         let attempts = 0;
         do {
@@ -250,7 +253,7 @@ export class GameScene extends Phaser.Scene {
         }
     }
     
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 25; i++) {
         let x, y;
         let attempts = 0;
         do {
@@ -266,7 +269,7 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 30; i++) {
         let x, y;
         let attempts = 0;
         do {

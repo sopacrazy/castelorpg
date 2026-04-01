@@ -9,14 +9,20 @@ export const MobileControls = () => {
   const [joystickPos, setJoystickPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const joystickBaseRef = useRef<HTMLDivElement>(null);
+  const joystickPointerId = useRef<number | null>(null);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     setJoystickActive(true);
+    joystickPointerId.current = e.pointerId;
     handlePointerMove(e);
   };
 
   const handlePointerMove = (e: React.PointerEvent | PointerEvent) => {
     if (!joystickActive || !joystickBaseRef.current) return;
+    
+    // Only track the pointer that started the joystick
+    if (e instanceof PointerEvent && e.pointerId !== joystickPointerId.current) return;
+    if (!(e instanceof PointerEvent) && (e as any).nativeEvent instanceof PointerEvent && (e as any).nativeEvent.pointerId !== joystickPointerId.current) return;
 
     const base = joystickBaseRef.current.getBoundingClientRect();
     const centerX = base.left + base.width / 2;
@@ -42,8 +48,11 @@ export const MobileControls = () => {
     });
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (e: React.PointerEvent | PointerEvent) => {
+    if (e instanceof PointerEvent && e.pointerId !== joystickPointerId.current) return;
+    
     setJoystickActive(false);
+    joystickPointerId.current = null;
     setJoystickPos({ x: 0, y: 0 });
     setVirtualJoystick({ x: 0, y: 0 });
   };
