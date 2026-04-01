@@ -32,8 +32,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    const worldWidth = 10000;
-    const worldHeight = 10000;
+    const worldWidth = 2500;
+    const worldHeight = 2500;
 
     // Physics Groups
     this.walls = this.physics.add.staticGroup();
@@ -124,24 +124,8 @@ export class GameScene extends Phaser.Scene {
 
     const state = useGameStore.getState();
 
-    // Dynamic zoom based on player position (Inside/Outside Castle)
-    const worldWidth = 10000;
-    const worldHeight = 10000;
-    const offsetX = worldWidth / 2 - 320;
-    const offsetY = worldHeight / 2 - 300;
-    
-    // Castle bounds based on createMap logic
-    const inCastle = 
-      this.player.x > offsetX + 20 && 
-      this.player.x < offsetX + 610 && 
-      this.player.y > offsetY + 110 && 
-      this.player.y < offsetY + 490;
-    
-    const targetZoom = inCastle ? 0.75 : 0.45;
-    if (state.zoom !== targetZoom) {
-        state.setZoom(targetZoom);
-        this.cameras.main.zoomTo(targetZoom, 1000);
-    }
+    // Update camera zoom from store (kept fixed at 0.45)
+    this.cameras.main.setZoom(state.zoom);
 
     // Manual camera sync/center request from React UI
     if (state.cameraSyncCounter > this.lastCameraSync) {
@@ -474,11 +458,11 @@ export class GameScene extends Phaser.Scene {
   private spawnEnemy() {
     this.enemiesToSpawn--;
 
-    // Spawn at random edge of the 4000x4000 world
+    // Spawn at random edge of the world
     const edge = Math.floor(Math.random() * 4);
     let x = 0, y = 0;
-    const w = 4000;
-    const h = 4000;
+    const w = this.physics.world.bounds.width;
+    const h = this.physics.world.bounds.height;
 
     if (edge === 0) {
       x = Math.random() * w;
