@@ -123,9 +123,25 @@ export class GameScene extends Phaser.Scene {
     this.player.update(time, delta);
 
     const state = useGameStore.getState();
+
+    // Dynamic zoom based on player position (Inside/Outside Castle)
+    const worldWidth = 10000;
+    const worldHeight = 10000;
+    const offsetX = worldWidth / 2 - 320;
+    const offsetY = worldHeight / 2 - 300;
     
-    // Update camera zoom from store
-    this.cameras.main.setZoom(state.zoom);
+    // Castle bounds based on createMap logic
+    const inCastle = 
+      this.player.x > offsetX + 20 && 
+      this.player.x < offsetX + 610 && 
+      this.player.y > offsetY + 110 && 
+      this.player.y < offsetY + 490;
+    
+    const targetZoom = inCastle ? 0.75 : 0.45;
+    if (state.zoom !== targetZoom) {
+        state.setZoom(targetZoom);
+        this.cameras.main.zoomTo(targetZoom, 1000);
+    }
 
     // Manual camera sync/center request from React UI
     if (state.cameraSyncCounter > this.lastCameraSync) {

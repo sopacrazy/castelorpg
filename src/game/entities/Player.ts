@@ -43,10 +43,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private handleMovement() {
-    if (this.isAttacking) {
-      this.setVelocity(0, 0);
-      return;
-    }
 
     const state = useGameStore.getState();
     const speed = state.speed;
@@ -108,7 +104,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
       this.isAttacking = true;
       this.lastAttackTime = time;
-      this.setVelocity(0, 0);
 
       // Position hitbox based on facing direction
       const offset = 32;
